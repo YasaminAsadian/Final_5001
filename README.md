@@ -23,11 +23,11 @@ One of the key features of this project is that we are able to demonstrate that 
 
 Guide
 
-In order to run this code, you simply need to run the python file ‘run_game_of_life.py’ from the terminal. I have also provided a test.py file which tests if the code runs without any failures in any given steps. When you run the run_game_of_life.py, you should be able to see an animation that demonstrates the evolution of cells. 
+In order to run this code, you simply need to run the python file ‘run_game_of_life.py’ from the terminal. I have also provided a test.py file which tests if the code runs without any failures in any given steps. When you run the run_game_of_life.py, you should be able to see an animation that demonstrates the evolution of cells. Please note that the main directory contains the run_game_of_life.py for running the game, a test.py file for testing the codes and a sample run in the form of a movie animation. The functions directory contains four python files which each includes a function required for running this project. 
 
 Installation Instructions
 
-There is no installation required for this code as it just shows an animation. 
+There is no installation required for this code as it shows an animation as the end result. 
 
 Code Review
 
@@ -38,7 +38,7 @@ The whole concept of this code runs around the following four rules:
 4.	Any dead cell with exactly three live neighbours becomes a live cell (reproduction)
 
    
-We start with a random matrix with random number of dead vs live cells (but the probability is already set). The function counting_neighbours start counting all the 8 surrounding neighbours according to the periodic or non-periodic boundary condition to come up with a number which represents the total live cells around each element. Once this number has been figured out the four rules of the game will be checked and evaluated via the checking_rule function. The next step is to change live cells (if necessary) according to the rules. In this step, some of the live cells (ones) may be changed to zeros (dead) or may even just stay to be one. On the other hand, some of the zeros may become ones (live) or stay to be zero according to the rules. All these small changes will be saved in another ‘updated’ matrix via updated_matrix.py such that when the status of all of the cells and their neighbours are recognized we will have a completed new matrix (aka. Actual matrix) which will be shown as a real time animation using the game_of_life.py function. 
+We start with a random matrix with random number of dead vs live cells (with certain live to dead cell probability). The function counting_neighbours start counting all the 8 surrounding neighbours according to the periodic or non-periodic boundary condition to come up with a number which represents the total live cells around each element. Once this number has been figured out the four rules of the game will be checked and evaluated via the checking_rule function. The next step is to change live cells (if necessary) according to the rules. In this step, some of the live cells (ones) may be changed to zeros (dead) or may even just stay to be one. On the other hand, some of the zeros may become ones (live) or stay to be zero according to the rules. All these small changes will be saved in another ‘updated’ matrix via updated_matrix.py such that when the status of all of the cells and their neighbours are recognized we will have a completed new matrix (aka. Actual matrix) which will be shown as a real time animation using the game_of_life.py function. 
 
 
 Major Challenges
@@ -48,7 +48,7 @@ One of the main challenging parts of this project was to decide what would happe
 
 Example Runs
 
-I have documented the running of this project in a short 10s video that is called ‘animation_run.mov’. This video will start from a random matrix and then evolve into more complex structures. If you run the actual file, you will be able to see that the structures become stable at some point in time. 
+I have documented the running of this project in a short 10 seconds video that is called ‘animation_run.mov’. This video will start from a random matrix and then evolve into more complex structures. If you run the actual file, you will be able to see that the structures become stable at some point in time. 
 
 
 Testing
