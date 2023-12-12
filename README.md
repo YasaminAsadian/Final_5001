@@ -62,7 +62,7 @@ I tested this project using the test.py file which is provided in the final proj
  
 Missing Features / What's Next
 
-In this project due to the short amount of time that we had I was only able to write code and test the four fundamental rules for square lattice which eventually led to stable structures after around 2-3 minutes. If I had more time, I could have executed the same rules and conditions for lattices with more complex shapes including honeycomb, triangles, hexagon to see if the application of rules would also create stable structures in that setting. In future, this game can as well be implemented in a 3D setting such as a torus for a better representation instead of the 2D setting.  
+In this project due to the short amount of time that we had I was only able to write code and test the four fundamental rules for square lattice which eventually led to stable structures after around 2-3 minutes. If I had more time, I could have executed the same rules and conditions for lattices with more complex shapes including honeycomb, triangles, hexagon. Exploring these different geometries could reveal how the rules could impact stability and pattern formation in diverse lattice types. Additionally, analyzing the behaviour of these rules in non-square lattices might offer insights into the adaptibility and universality of the rules themselves. Furtheremore, this game can be implemented in a 3D setting such as a torus for a better representation instead of the current 2D demonstration. This transition to a three-dimensional model could provide a more comprehensive understanding of spatial interactions and dynamics in complex systems. 
 
 
 
