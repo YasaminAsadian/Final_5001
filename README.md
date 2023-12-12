@@ -1,11 +1,15 @@
-# Final_5001
+# Final_project_CS5001
 
 
 This repository contains code, example runs, and a report for CS5001 final project. 
 
+
 •	Student Name: Yasamin Asadian 
+
 •	Github Username: YasaminAsadian
+
 •	Semester: Fall 2023
+
 •	Course: CS5001 
 
 
