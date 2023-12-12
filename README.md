@@ -18,22 +18,26 @@ The game of life, which is often referred to as simply ‘life’, is a cellular
 Key Features
 
 
-One of the key features of this project is that we are able to demonstrate that by the application of four simple rules we are able to produce complex patterns, some of which change their shape, move, get destroyed or become stable over time. The beauty and the logic behind this design relies solely on the idea of how these four rules are being implemented in a matrix setting which its elements are ones and zeros. The matrix in a sense allows for demonstration of underpopulation, stabilization, overpopulation and reproduction which will further be explained in the methods section. Another feature of this project is the educational aspect that it provides for further understanding of laws of physics, biology, and the creation of universe as the matrix provides a dynamic system of still lives, oscillators and spaceships. Lastly, some of the features of this code can be modified such as the grid and cell colour, grid size, time interval, boundary type, etc. This flexibility can make the visualization of the animation more appealing for each individual user’s taste. However, the features that are currently implemented in the code are my favorite way to demonstrate this game/project. 
+One of the key features of this project is that we are able to demonstrate that by the application of four simple rules we are able to produce complex patterns, some of which change their shape, move, get destroyed or become stable over time. The beauty and the logic behind this design relies solely on the idea of how these four rules are being implemented in a matrix setting which its elements are ones and zeros. The matrix in a sense allows for demonstration of underpopulation, stabilization, overpopulation and reproduction which will further be explained in the methods section. Another feature of this project is the educational aspect that it provides for further understanding of laws of physics, biology, and the creation of universe as the matrix provides a dynamic system of still lives, oscillators and spaceships. Lastly, some of the features of this code can be modified such as the grid and cell colour, matrix size, time interval, boundary type, etc. This flexibility can make the visualization of the animation more appealing for each individual user’s taste. However, the features that are currently implemented in the code are my favorite way to demonstrate this game/project. 
 
 
 Guide
 
 In order to run this code, you simply need to run the python file ‘run_game_of_life.py’ from the terminal. I have also provided a test.py file which tests if the code runs without any failures in any given steps. When you run the run_game_of_life.py, you should be able to see an animation that demonstrates the evolution of cells. 
+
 Installation Instructions
+
 There is no installation required for this code as it just shows an animation. 
 
 Code Review
 
-The whole concept of this code runs around the following four codes:
+The whole concept of this code runs around the following four rules:
 1.	Any live cell with fewer than two live neighbours die (underpopulation)
 2.	Any live cell with two or three live neighbours lives on to the next generation.
 3.	Any live cell with more than three live neighbours dies (overpopulation) 
 4.	Any dead cell with exactly three live neighbours becomes a live cell (reproduction)
+
+   
 We start with a random matrix with random number of dead vs live cells (but the probability is already set). The function counting_neighbours start counting all the 8 surrounding neighbours according to the periodic or non-periodic boundary condition to come up with a number which represents the total live cells around each element. Once this number has been figured out the four rules of the game will be checked and evaluated via the checking_rule function. The next step is to change live cells (if necessary) according to the rules. In this step, some of the live cells (ones) may be changed to zeros (dead) or may even just stay to be one. On the other hand, some of the zeros may become ones (live) or stay to be zero according to the rules. All these small changes will be saved in another ‘updated’ matrix via updated_matrix.py such that when the status of all of the cells and their neighbours are recognized we will have a completed new matrix (aka. Actual matrix) which will be shown as a real time animation using the game_of_life.py function. 
 
 
