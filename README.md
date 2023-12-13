@@ -27,7 +27,7 @@ One of the key features of this project is that we are able to demonstrate that 
 
 Guide
 
-In order to run this code, you simply need to run the python file ‘run_game_of_life.py’ from the terminal. I have also provided a test.py file which tests if the code runs without any failures in any given steps. When you run the run_game_of_life.py, you should be able to see an animation that demonstrates the evolution of cells. Please note that the main directory contains the run_game_of_life.py for running the game, a test.py file for testing the codes and a sample run in the form of a movie animation. The functions directory contains four python files which each includes a function required for running this project. 
+In order to run this code, you simply need to run the python file ‘run_game_of_life.py’ from the terminal. I have also provided a test.py file which tests if the code runs without any failures in any given steps. When you run the run_game_of_life.py, you should be able to see an animation that demonstrates the evolution of cells. Please note that the main directory contains the run_game_of_life.py for running the game, a test.py file for testing the codes and a sample run in the form of a movie/animation (i.e. animation_run.mov). The functions directory contains four python files which each includes a function required for running this project. 
 
 Installation Instructions
 
@@ -42,16 +42,140 @@ The whole concept of this code runs around the following four rules:
 4.	Any dead cell with exactly three live neighbours becomes a live cell (reproduction)
 
    
-We start with a random matrix with random number of dead vs live cells (with certain live to dead cell probability). The function counting_neighbours starts counting all the 8 surrounding neighbours according to the periodic or non-periodic boundary condition to come up with a number which represents the total live cells around each element.Once this number has been figured out the four rules of the game will be checked and evaluated via the checking_rule function. The next step is to change the state of live cells or dead cells (if necessary) according to the rules. In this step, some of the live cells (ones) may be changed to zeros (dead) or may even just stay to be one (stay live). On the other hand, some of the zeros may become ones (live) or stay to be zero (dead) according to the rules. All these small changes will be saved in another ‘updated’ matrix via updated_matrix.py such that when the status of all of the cells and their neighbours are recognized, we will have a completed version of a new matrix (aka. updated actual matrix) which will be shown as one of the frames in a real time animation using the game_of_life.py function. This process then continues to repeat itself such that all previous matrices will be updated to a new version according to the four laws and each of these new versions of matrices will form one of the frames in the animation. When these frames are stacked together, we are looking at a full length animation which shows the formation of all of the simple or complex shapes, their oscillation and/or their movements. Here is a snippet breakdown of the code: 
+We start with a random matrix with random number of dead vs live cells (with certain live to dead cell probability). The function counting_neighbours starts counting all the 8 surrounding neighbours according to the periodic or non-periodic boundary condition to come up with a number which represents the total live cells around each element.Once this number has been figured out the four rules of the game will be checked and evaluated via the checking_rule function. The next step is to change the state of live cells or dead cells (if necessary) according to the rules. In this step, some of the live cells (ones) may be changed to zeros (dead) or may even just stay to be one (stay live). On the other hand, some of the zeros may become ones (live) or stay to be zero (dead) according to the rules. All these small changes will be saved in another ‘updated’ matrix via updated_matrix function such that when the status of all of the cells and their neighbours are recognized, we will have a completed version of a new matrix (aka. updated actual matrix) which will be shown as one of the frames in a real time animation using the game_of_life function. This process then continues to repeat itself such that all previous matrices will be updated to a new version according to the four laws and each of these new versions of matrices will form one of the frames in the animation. When these frames are stacked together, we are looking at a full length animation which shows the formation of all of the simple or complex shapes, their oscillation and/or their movements. Here is a snippet breakdown of the code: 
+
+The function for counting neighbours, as stated earlier has the task of counting the number of live cells surrounding each cell in a matrix. One challenging and interesting aspect of this code was to efficiently handle the edge cases such as the cells in the borders of the matrix. 
+For this reason I came up with defining two boundary types periodic and non-periodic which will be dealing with this difficulty (details have been explained in the major challenges section). 
+Once this code runs it will return the number of live cells around each and every cell/element of the matrix. This number will then be passed to the next function: checking rules of the game. 
+
+```
+def counting_neighbour_values_of_each_cell(matrix, i, j, boundary_type):
+    if boundary_type == "non_periodic":
+        
+        if (0 <= i-1) and (0 <= j - 1):
+            count += matrix[i - 1, j - 1]
+        if (0 <= i-1):
+            count += matrix[i - 1, j]
+        if (0 <= i-1) and (j + 1 < mat_j):
+            count += matrix[i - 1, j + 1] 
+        if (0 <= j-1):
+            count += matrix[i , j - 1] 
+        if (j + 1 < mat_j):
+            count += matrix[i , j + 1]
+        if (i + 1 < mat_i) and (0 <= j - 1):
+            count += matrix[i + 1, j - 1]
+        if (i + 1 < mat_i):
+            count += matrix[i+1, j]
+        if (i + 1 < mat_i) and (j + 1 < mat_j):
+            count += matrix[i + 1, j + 1]
+
+    if boundary_type == "periodic":
+
+        a1 = i - 1
+        a3 = i + 1
+        b1 = j - 1
+        b3 = j + 1
+
+        if i == 0:
+            a1 = mat_i - 1
+        if i == mat_i - 1:
+            a3 = 0
+        if j == 0:
+            b1 = mat_j - 1
+        if j == mat_j - 1:
+            b3 = 0 
+            
+        count  = (matrix[a1, b1] + matrix[a1, j] + matrix[a1, b3] 
+                + matrix[i , b1] +                matrix[i , b3]
+                + matrix[a3, b1] + matrix[a3, j] + matrix[a3, b3])
+        
+    if count > 8 or count < 0:
+        print("Total value of the neighbours cannot be greater than 8 or smaller than zero.")
+
+    return count
+```
+
+This second function takes in the neighbour count from previous function and applies one of the four rules according to the neighbour count to each and every cell. There is an 'if' statement for every rule, thus in total we have four 'if' statements. As a result of the application of these rules some of the live cells can become dead or stay to be alive, also some of the dead cells may remain dead or become alive. This change in the state of being live or dead is represented by a change in the numbers from one to zero or vice versa, where a number one represents a live cell and zero is dead. These changes will later be translated into black colour for live cell and white colour for dead cell in the animation function (game_of_life.py)
+The cells numbers will then be passed to the next function: generate_the_new_matrix in the python file update_matrix.py
+
+```
+def checking_rules_of_the_game(cell_value, neighbour_count):
+
+    if cell_value == 1:
+        if neighbour_count < 2:
+            cell_value = 0
+
+    if cell_value == 1:
+        if neighbour_count == 2 or neighbour_count == 3:
+            cell_value = 1
+
+    if cell_value == 1:
+        if neighbour_count > 3:
+            cell_value = 0
+
+    if cell_value == 0:
+        if neighbour_count == 3:
+            cell_value = 1
+
+    return cell_value
+```
+The function below applies the rules of the game to every individual 
+cell in a matrix based on the specified boundary condition, updating the state 
+of each cell. It then returns the updated matrix. The importance of this function is that it updates the whole matrix and every cell/element all at the same time such that it would create one of the frames in our animation. This is necessary as we need to first figure out the neighbour count for each of the elements, take this information to a new function to be saved and then update the whole matrix all at once. In this sense there would not be any confusion to the neighbour counts since they do not get updated on a singular one-by-one basis, but rather this information is saved in a new matrix such that we will create a new matrix all at once as the result of what this function returns. This info will then be passed to the next function:
+game_of_life_animation in the game game_of_life.py file. 
+
+```
+def generate_the_new_matrix(matrix, boundary_type):
+   
+  
+    mat_i, mat_j = matrix.shape
+    matrix_updated = np.zeros((mat_i, mat_j))
+    
+    for i in range(mat_i):
+        for j in range(mat_j):
+            cell_value = matrix[i, j]
+            neighbour_count = counting_neighbour_values_of_each_cell(matrix, i, j, boundary_type)
+            cell_new_value = checking_rules_of_the_game(cell_value, neighbour_count)
+            matrix_updated[i, j] = cell_new_value
+
+    return matrix_updated
+```
+ This function below animates the Game of Life in real-time on a matrix of size (mat_i, mat_j).
+ Its task is to stack all of the updated matrices which were returned from the previous function such that they will create a short movie/animation. Some of the components of this animation may be modified in the run_game_of_life.py file such as the cell colour, grid colour, etc. to make the representation suitable for each audience's taste or colour perception. Finally the code can run via the run_game_of_life.py file. 
+
+```
+def game_of_life_animation(mat_i, mat_j, boundary_type, cell_color, grid_color, interval, frames, live_probability):
+   
+    matrix = np.random.choice([0, 1], size = (mat_i, mat_j), p = [1 - live_probability, live_probability])
+
+    fig, ax = plt.subplots()
+    matrice = ax.matshow(matrix, cmap = cell_color)
+
+    ax.set_xticks(np.arange(-0.5, mat_j, 1), minor = False)
+    ax.set_yticks(np.arange(-0.5, mat_i, 1), minor = False)
+    ax.tick_params(axis = 'both', which = 'major', length = 0, labelleft = False, labeltop = False)
+    ax.grid(True, which = 'major', color = grid_color, linestyle = '-', linewidth = 0.2)
 
 
+    def update(_):
+        nonlocal matrix
+        # Update the matrix based on the game's rules and boundary condition
+        matrix = generate_the_new_matrix(matrix, boundary_type)
+        matrice.set_array(matrix)  # Update the plot with the new matrix state
+        return [matrice]
 
+    # Create and start the animation
+    animation = FuncAnimation(fig, update, frames = frames, interval = interval, blit = False)
+
+    plt.show()
+    return animation
+```
 
 
 Major Challenges
 
 
-One of the main challenging parts of this project was to decide what would happen when the neighbours of the marginal elements needed to be counted. In this case, since we would not be having all 8 members present, we would have needed to create numerous ‘if’ statements to consider different situations for each individual cell in the margin. Instead of doing that, we came up with giving two types of boundary types: periodic and non-periodic. In the case of a non-periodic boundary type, we have created a ‘padding’ of all zeros all around the marginal cells/elements such that those zeros will be added (as if there are no neighbours in that place initially) in the process of adding the total neighbours. For the periodic boundary condition, the easiest way to explain it is to imagine the shape of a torus, where the matrix essentially has no boundaries but rather it wraps around itself both horizontally and vertically, allowing the edges/margins to connect seamlessly. This approach created an endless space for the dynamic structures to move from one end of the matrix to the other in a 2D setting without the need to code for a 3D structure. Successfully overcoming this challenge proved to be a rewarding process for me. 
+One of the main challenging parts of this project was to decide what would happen when the neighbours of the marginal elements (i.e. edge cases) needed to be counted. In this case, since we would not be having all 8 members present, we would have needed to create numerous ‘if’ statements to consider different situations for each individual cell in the margin. Instead of doing that, we came up with giving two types of boundary types: periodic and non-periodic. In the case of a non-periodic boundary type, we have created a ‘padding’ of all zeros all around the marginal cells/elements such that those zeros will be added (as if there are no neighbours in that place initially) in the process of adding the total neighbours. For the periodic boundary condition, the easiest way to explain it is to imagine the shape of a torus, where the matrix essentially has no boundaries but rather it wraps around itself both horizontally and vertically, allowing the edges/margins to connect seamlessly. This approach created an endless space for the dynamic structures to move from one end of the matrix to the other in a 2D setting without the need to code for a 3D structure. Successfully overcoming this challenge proved to be a rewarding process for me. 
 
 Example Runs
 
