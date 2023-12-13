@@ -37,9 +37,7 @@ git clone [https://github.com/YasaminAsadian/Final_5001.git]
 
 cd [Final_5001] 
 
-Additionally, you will need to manually install required packages including: 'numpy' library for array manipulations, 'matplotlib' for animations. Finally, the main script must be executed using 
-
-python run_game_of_life.py
+Additionally, you will need to manually install required packages including: 'numpy' library for array manipulations, 'matplotlib' for animations. Finally, the main script must be executed using: python run_game_of_life.py
 
 Code Review
 
